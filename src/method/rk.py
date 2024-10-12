@@ -20,11 +20,11 @@ def get_k_coefficients(t: float, y: np.ndarray, h: float, f: Callable[[Any, Any]
         s - the number of stages, a_ij, b_i, c_i is given by tableau.
 
     :param t: function t parameter
-    :param y:
+    :param y: modeling unit, we have two species and two y's
     :param h: step size
     :param f: our model
     :param tableau: tableau dictionary, table parsed from butcher_tables dir
-    :return:
+    :return: k coefficient for each y value (for each specie)
     """
 
     a_ = tableau['a_']
@@ -45,6 +45,15 @@ def get_k_coefficients(t: float, y: np.ndarray, h: float, f: Callable[[Any, Any]
 
 def rk_one_step(t: float, y: np.ndarray, h: float, f: Callable[[Any, Any], np.ndarray], tableau: dict) \
         -> Tuple[float, np.ndarray]:
+    """
+    Do one step of Runge Kutta method
+    :param t: function t parameter
+    :param y: modeling unit, we have two species and two y's
+    :param h: step size
+    :param f: our model
+    :param tableau: tableau dictionary, table parsed from butcher_tables dir
+    :return: t_i and y_i
+    """
     k = get_k_coefficients(t, y, h, f, tableau)
     y_n = y
     b_ = tableau['b_']
@@ -56,8 +65,19 @@ def rk_one_step(t: float, y: np.ndarray, h: float, f: Callable[[Any, Any], np.nd
     return t_n, y_n
 
 
-def rk(t0: float, t_end: float, y0: np.ndarray[float], h: float,
+def rk(t0: float, t_end: float, y0: np.ndarray, h: float,
        f: Callable[[Any, Any], np.ndarray], tableau: dict) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Runge-Kutta method: https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
+
+    :param t0: Initial t parameter (time for lvg model)
+    :param t_end: Final t parameter (time for lvg model)
+    :param y0: Initial y parameter (population quantity for each specie)
+    :param h: step size
+    :param f: our model
+    :param tableau: which butcher table to use
+    :return: result of modelling, t and y values
+    """
     t_limit = int((t_end - t0) / h)
     t = np.zeros(t_limit)
 

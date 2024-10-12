@@ -6,14 +6,21 @@ from inverse_bio_ode_solver.src.utils.parse_tableau import input_butcher_tableau
 
 
 def lotka_volterra(_, N):
+    """
+    Default Lotka Volterra model
+
+    :param _: t not used in this model (model should look like f(t, y))
+    :param N: population score (predator, prey)
+    :return: model values
+    """
     alpha = 1.1
     beta = 0.4
     gamma = 0.4
     delta = 0.1
 
-    xdot = np.array([alpha * N[0] - beta * N[0] * N[1], delta * N[0] * N[1] - gamma * N[1]])
+    Ndot = np.array([alpha * N[0] - beta * N[0] * N[1], delta * N[0] * N[1] - gamma * N[1]])
 
-    return xdot
+    return Ndot
 
 
 if __name__ == "__main__":

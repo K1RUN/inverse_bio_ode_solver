@@ -5,10 +5,15 @@ from inverse_bio_ode_solver.src.method.rk import rk
 from inverse_bio_ode_solver.src.utils.parse_tableau import input_butcher_tableau
 
 
-def lotka_volterra_gause(_, N):
+def lotka_volterra_gause(_, N: np.array):
     """
+    Model is described in: README.md
     Equilibrium is reached when alpha < K1/K2 and beta < K2/K1, e.g. alpha = 1, beta = 0.5, K1 = 60, K2 = 40.
     One specie displace another when beta = 1/alpha, e.g. alpha = 3, beta = 1/3, K1 = 60, K2 = 40
+
+    :param _: is not used in this model (supposed to be t)
+    :param N: population score (for each specie)
+    :return: model values
     """
 
     b1 = 1.2
@@ -18,10 +23,10 @@ def lotka_volterra_gause(_, N):
     alpha = 1
     beta = 0.5
 
-    xdot = np.array([b1 * N[0] * (1 - (N[0] + alpha * N[1]) / K1),
+    Ndot = np.array([b1 * N[0] * (1 - (N[0] + alpha * N[1]) / K1),
                      b2 * N[1] * (1 - (N[1] + beta * N[0]) / K2)])
 
-    return xdot
+    return Ndot
 
 
 if __name__ == "__main__":

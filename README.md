@@ -14,7 +14,7 @@ This project solves two Lotka-Volterra models: classic equations (predator-prey)
 
 and competitive equations describing Gause’s “Struggle for Existence”. 
 
-```math
+```math[README.md](README.md)
 \dfrac{dN_1}{dt} = b_1 N_1 \left(1 - \dfrac{N_1 + \alpha N_2} {K_1} \right)
 ```
 ```math
@@ -39,3 +39,5 @@ Working directory = inverse_bio_ode_solver.
 
 To run model, run from python script in src/model and specify dp table name in stdin 
 (they are stored inside butcher_table directory).
+
+To import PyCharm config copy all files from PyCharmConfig dir to projects .idea
