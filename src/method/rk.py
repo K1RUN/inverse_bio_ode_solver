@@ -1,10 +1,32 @@
 import math
 import numpy as np
-from typing import Callable
+from typing import Callable, List, Tuple, Any
 
 
-def get_k_coefficients(t: float, y: np.ndarray, h: float, f: Callable[[..., ...], np.ndarray], tableau: dict) \
-        -> list[np.ndarray]:
+def get_k_coefficients(t: float, y: np.ndarray, h: float, f: Callable[[Any, Any], np.ndarray], tableau: dict) \
+        -> List[np.ndarray]:
+    """
+    Return k_i coefficients given a tableau.
+
+    Notes:
+        Explicit Runge-Kutta method uses following formulas
+        y_(n+1) = y_n + h * sum (i = 1..s) b_i * k_i
+        where
+            k_1 = f(t_n, y_n)
+            k_2 = f(t_n + c_2 * h, y_n + (a_21 * k_1) * h)
+            k_3 = f(t_n + c_3 * h, y_n + (a_31 * k_1 + a_32 * k_2) * h)
+            ...
+            k_n = f(t_n + c_s * h, y_n + (a_s1 * k_1 + a_s2 * k_2 + ... + a_(s,s-1) * k_(s-1)) * h)
+        s - the number of stages, a_ij, b_i, c_i is given by tableau.
+
+    :param t: function t parameter
+    :param y:
+    :param h: step size
+    :param f: our model
+    :param tableau: tableau dictionary, table parsed from butcher_tables dir
+    :return:
+    """
+
     a_ = tableau['a_']
     c_ = tableau['c_']
     k = []
@@ -21,8 +43,8 @@ def get_k_coefficients(t: float, y: np.ndarray, h: float, f: Callable[[..., ...]
     return k
 
 
-def rk_one_step(t: float, y: np.ndarray, h: float, f: Callable[[..., ...], np.ndarray], tableau: dict) \
-        -> tuple[float, np.ndarray]:
+def rk_one_step(t: float, y: np.ndarray, h: float, f: Callable[[Any, Any], np.ndarray], tableau: dict) \
+        -> Tuple[float, np.ndarray]:
     k = get_k_coefficients(t, y, h, f, tableau)
     y_n = y
     b_ = tableau['b_']
@@ -35,7 +57,7 @@ def rk_one_step(t: float, y: np.ndarray, h: float, f: Callable[[..., ...], np.nd
 
 
 def rk(t0: float, t_end: float, y0: np.ndarray[float], h: float,
-       f: Callable[[..., ...], np.ndarray], tableau: dict) -> tuple[np.ndarray, np.ndarray]:
+       f: Callable[[Any, Any], np.ndarray], tableau: dict) -> Tuple[np.ndarray, np.ndarray]:
     t_limit = int((t_end - t0) / h)
     t = np.zeros(t_limit)
 

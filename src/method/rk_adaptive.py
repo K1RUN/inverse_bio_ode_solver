@@ -1,12 +1,12 @@
 import numpy as np
-from typing import Callable
+from typing import Callable, Tuple
 
-from bio_ode_solver.src.method.rk import get_k_coefficients
+from inverse_bio_ode_solver.src.method.rk import get_k_coefficients
 
 
 def rk_adaptive(t0: float, t_end: float, y0: np.ndarray[float], h_init: float,
                 f: Callable[[..., ...], np.ndarray], tableau: dict,
-                Atoli: float, Rtoli: float) -> tuple[np.ndarray, np.ndarray]:
+                Atoli: float, Rtoli: float) -> Tuple[np.ndarray, np.ndarray]:
     t_limit = int((t_end - t0) / h_init)
     t = np.zeros(t_limit)
     y = np.zeros((y0.size, t_limit))
@@ -23,7 +23,7 @@ def rk_adaptive(t0: float, t_end: float, y0: np.ndarray[float], h_init: float,
 
 
 def rk_one_step_adaptive(t: float, y: np.ndarray, y_star: np.ndarray, h: float, f: Callable[[..., ...], np.ndarray],
-                         tableau: dict, Atoli: float, Rtoli: float) -> tuple[float, np.ndarray, np.ndarray, float]:
+                         tableau: dict, Atoli: float, Rtoli: float) -> Tuple[float, np.ndarray, np.ndarray, float]:
     k = get_k_coefficients(t, y, h, f, tableau)
     y_n = y
     y_n_star = y_star

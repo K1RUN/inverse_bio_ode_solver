@@ -1,4 +1,4 @@
-# Lotka-Volterra model solving using Runge Kutta methods (predator-prey and competitve equations describing Gause’s “Struggle for Existence”) on Python
+# Lotka-Volterra model solving using Runge Kutta methods (predator-prey and competitive equations describing Gause’s “Struggle for Existence”) on Python
 This project solves two Lotka-Volterra models: classic equations (predator-prey) 
 ```math
 \dfrac{dN_1}{dt} = \alpha N_1 - \beta N_1 N_2 
@@ -26,3 +26,16 @@ and competitive equations describing Gause’s “Struggle for Existence”.
 </p>
 No additional packages were used for computing ODE's.
 Numpy is used to compute Runge-Kutta methods. 
+
+## Configuring and running
+Python>=3.9 is required for this project (Conda is suggested).
+
+Using conda, run
+```shell
+conda env create -f environment.yml
+```
+This will configure venv for this project.
+Working directory = inverse_bio_ode_solver.
+
+To run model, run from python script in src/model and specify dp table name in stdin 
+(they are stored inside butcher_table directory).

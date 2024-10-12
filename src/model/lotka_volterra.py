@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from bio_ode_solver.src.method.rk import rk
-from bio_ode_solver.src.utils.parse_tableau import input_butcher_tableau
+from inverse_bio_ode_solver.src.method.rk import rk
+from inverse_bio_ode_solver.src.utils.parse_tableau import input_butcher_tableau
 
 
 def lotka_volterra(_, N):

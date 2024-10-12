@@ -1,9 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from bio_ode_solver.src.method.rk import rk
-from bio_ode_solver.src.utils.parse_tableau import parse_butcher_tableau
-from bio_ode_solver.src.model.lotka_volterra_gause import lotka_volterra_gause
+from inverse_bio_ode_solver.src.method.rk import rk
+from inverse_bio_ode_solver.src.utils.parse_tableau import parse_butcher_tableau
+from inverse_bio_ode_solver.src.model.lotka_volterra_gause import lotka_volterra_gause
 
 prefix = 'butcher_tables/'
 methods = ['rk2_ralston', 'rk_midpoint', 'rk2', 'rk4', 'rk5', 'dp8']

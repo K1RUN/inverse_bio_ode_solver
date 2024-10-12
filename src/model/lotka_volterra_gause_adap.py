@@ -1,9 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from bio_ode_solver.src.method.rk_adaptive import rk_adaptive
-from bio_ode_solver.src.utils.parse_tableau import input_butcher_tableau
-from bio_ode_solver.src.model.lotka_volterra_gause import lotka_volterra_gause
+from inverse_bio_ode_solver.src.method.rk_adaptive import rk_adaptive
+from inverse_bio_ode_solver.src.utils.parse_tableau import input_butcher_tableau
+from inverse_bio_ode_solver.src.model.lotka_volterra_gause import lotka_volterra_gause
 
 if __name__ == "__main__":
     table = input_butcher_tableau()
