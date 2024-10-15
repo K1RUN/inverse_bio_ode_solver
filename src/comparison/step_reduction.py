@@ -5,51 +5,56 @@ from inverse_bio_ode_solver.src.method.rk import rk
 from inverse_bio_ode_solver.src.utils.parse_tableau import parse_butcher_tableau
 from inverse_bio_ode_solver.src.model.lotka_volterra_gause import lotka_volterra_gause
 
-prefix = 'butcher_tables/'
-methods = ['rk2_ralston', 'rk_midpoint', 'rk2', 'rk4', 'rk5', 'dp8']
-points = {method: {} for method in methods}
 
-step = 1
-steps = [0.001 * 2 ** (n - 1) for n in range(1, 12)]
-y0 = np.array([20, 5], dtype=float)
+def step_reduction():
+    prefix = 'butcher_tables/'
+    methods = ['rk2_ralston', 'rk_midpoint', 'rk2', 'rk4', 'rk5', 'dp8']
+    points = {method: {} for method in methods}
 
-for step in steps:
-    for method in methods:
-        table = parse_butcher_tableau(prefix + method)
-        t_method, y_method = rk(0, 70, y0, step, lotka_volterra_gause, table)
-        points[method][step] = {'t': t_method, 'y': y_method}
+    steps = [0.001 * 2 ** (n - 1) for n in range(1, 12)]
+    y0 = np.array([20, 5], dtype=float)
 
-fig, axs = plt.subplots(2, 3)
+    for step in steps:
+        for method in methods:
+            table = parse_butcher_tableau(prefix + method)
+            t_method, y_method = rk(0, 70, y0, step, lotka_volterra_gause, table)
+            points[method][step] = {'t': t_method, 'y': y_method}
 
-step_colors = {}
-color_index = 0
+    fig, axs = plt.subplots(2, 3)
 
-for step in points[methods[0]]:
-    step_colors[step] = plt.cm.tab20(color_index)
-    color_index += 1
+    step_colors = {}
+    color_index = 0
 
-step_labels = {}
+    for step in points[methods[0]]:
+        step_colors[step] = plt.cm.tab20(color_index)
+        color_index += 1
 
-for i, method in enumerate(methods):
-    for step, data in points[method].items():
-        t_points = data['t']
-        y_points = data['y']
+    step_labels = {}
 
-        if step not in step_labels:
-            step_labels[step] = f'step={step}'
+    for i, method in enumerate(methods):
+        for step, data in points[method].items():
+            t_points = data['t']
+            y_points = data['y']
 
-        axs[i // 3][i % 3].plot(t_points, y_points[0], color=step_colors[step])
-        axs[i // 3][i % 3].plot(t_points, y_points[1], color=step_colors[step])
-        axs[i // 3][i % 3].set(xlabel="Time (t)", ylabel="Population (N)")
-        axs[i // 3][i % 3].grid(True)
-        axs[i // 3][i % 3].set_title(f'{method}')
+            if step not in step_labels:
+                step_labels[step] = f'step={step}'
 
-handles, labels = [], []
-for step, color in step_colors.items():
-    handles.append(plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=color, markersize=10))
-    labels.append(step_labels[step])
+            axs[i // 3][i % 3].plot(t_points, y_points[0], color=step_colors[step])
+            axs[i // 3][i % 3].plot(t_points, y_points[1], color=step_colors[step])
+            axs[i // 3][i % 3].set(xlabel="Time (t)", ylabel="Population (N)")
+            axs[i // 3][i % 3].grid(True)
+            axs[i // 3][i % 3].set_title(f'{method}')
 
-fig.legend(handles, labels, loc='upper right')
+    handles, labels = [], []
+    for step, color in step_colors.items():
+        handles.append(plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=color, markersize=10))
+        labels.append(step_labels[step])
 
-plt.grid(True)
-plt.show()
+    fig.legend(handles, labels, loc='upper right')
+
+    plt.grid(True)
+    plt.show()
+
+
+if __name__ == "__main__":
+    step_reduction()
