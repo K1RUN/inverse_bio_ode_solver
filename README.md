@@ -14,7 +14,7 @@ This project solves two Lotka-Volterra models: classic equations (predator-prey)
 
 and competitive equations describing Gause’s “Struggle for Existence”. 
 
-```math[README.md](README.md)
+```math
 \dfrac{dN_1}{dt} = b_1 N_1 \left(1 - \dfrac{N_1 + \alpha N_2} {K_1} \right)
 ```
 ```math
