@@ -103,9 +103,9 @@ This code adds random noise using a normal distribution with an amplitude specif
 
 ## Result
 The graph below shows the difference in population size between species:
-/bio_ode_solver/examples/detect_values/dv.png:
+/bio_ode_solver/examples/detected_values/dv.png:
 <p align="center" width="50%">
-  <img src="https://github.com/K1RUN/bio_ode_solver/blob/main/examples/detect_values/dv.png" />
+  <img src="https://github.com/K1RUN/inverse_bio_ode_solver/blob/main/examples/detected_values/dv.png" />
 </p>
 
 ## Configuring and running
