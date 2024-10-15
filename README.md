@@ -37,7 +37,9 @@ conda env create -f environment.yml
 This will configure venv for this project.
 Working directory = inverse_bio_ode_solver.
 
+The butcher_tables directory contains files with coefficients a<sub>ij</sub>, b<sub>i</sub>, c<sub>i</sub>. The [a<sub>ij</sub>] matrix is called the Runge–Kutta matrix, while b<sub>i</sub> and c<sub>i</sub> are known as weights and nodes. These data are usually arranged in a mnemonic device, known as a Butcher tableau.
+
 To run model, run from python script in src/model and specify dp table name in stdin 
-(they are stored inside butcher_table directory).
+(they are stored inside butcher_table directory). The data of the selected table will be parsed using src/utils/parse_tableau.py
 
 To import PyCharm config copy all files from PyCharmConfig dir to projects .idea
