@@ -105,7 +105,7 @@ This code adds random noise using a normal distribution with an amplitude specif
 The graph below shows the difference in population size between species:
 /bio_ode_solver/examples/detected_values/dv1.png:
 <p align="center" width="50%">
-  <img src="https://github.com/K1RUN/inverse_bio_ode_solver/blob/main/examples/detected_values/dv1.png" />
+  <img src="https://github.com/K1RUN/inverse_bio_ode_solver/blob/1%2C3-amendments/examples/detected_values/dv1.png" />
 </p>
 
 ## Configuring and running
@@ -120,7 +120,7 @@ Working directory = inverse_bio_ode_solver.
 
 The butcher_tables directory contains files with coefficients a<sub>ij</sub>, b<sub>i</sub>, c<sub>i</sub>. The [a<sub>ij</sub>] matrix is called the Runge–Kutta matrix, while b<sub>i</sub> and c<sub>i</sub> are known as weights and nodes. These data are usually arranged in a mnemonic device, known as a Butcher tableau.
 
-__To run the model, run from python script in src/detected_values/species_difference.py and specify dp table name in stdin 
+__To run the model, run from python script in <u>src/detected_values/species_difference.py</u> and specify dp table name in stdin 
 (they are stored inside butcher_table directory).__ The data of the selected table will be parsed using src/utils/parse_tableau.py
 
 To import PyCharm config copy all files from PyCharmConfig dir to projects .idea
