@@ -7,7 +7,7 @@ def input_butcher_tableau() -> dict:
     :return: dict of lists with floats
     """
     path = 'butcher_tables/'
-    filename = input()
+    filename = input("Enter the name of the Butcher's table: ")
     return parse_butcher_tableau(path + filename)
 
 
