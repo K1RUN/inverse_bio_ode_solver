@@ -14,7 +14,7 @@ def specie_difference(species_diff: np.ndarray) -> np.ndarray:
     :param species_diff: 2d array, each row corresponds to a specie population
     :return: difference between species population
     """
-    return np.abs(species_diff[0] - species_diff[1])
+    return np.square(species_diff[0] - species_diff[1])
 
 
 def detect_values(species_population: np.ndarray) -> np.ndarray:

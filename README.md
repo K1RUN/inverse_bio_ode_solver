@@ -85,10 +85,10 @@ for step in range(t_limit - 1):
 ```
 Here, the cycle is organized in time, and at each time step, the _rk_one_step()_ function is called, which updates the values of the populations. As a result, we get arrays of population numbers for each time point.
 
-To calculate the difference between populations, the specie_difference function is used, which returns the absolute difference in numbers |_N<sub>1</sub>-N<sub>2</sub>_|.
+To calculate the difference between populations, the specie_difference function is used, which returns the square difference in numbers (_N<sub>1</sub>-N<sub>2</sub>_)<sup></sup>.
 ```python
 def specie_difference(species_diff: np.ndarray) -> np.ndarray:
-    return np.abs(species_diff[0] - species_diff[1])  # Абсолютная разница между популяциями
+    return np.square(species_diff[0] - species_diff[1])
 ```
 This function helps to understand how the numbers of species differ at each time step.
 
@@ -96,16 +96,16 @@ To simulate random fluctuations in the number of populations, noise is added, wh
 ```python
 def detect_values(species_population: np.ndarray) -> np.ndarray:
     population_diff = specie_difference(species_population)
-    rnd = np.random.normal(0, NOISE_AMPLITUDE, species_population.shape[1])  # Генерация шума
+    rnd = np.random.normal(0, NOISE_AMPLITUDE, species_population.shape[1])
     return population_diff + rnd
 ```
 This code adds random noise using a normal distribution with an amplitude specified by the NOISE_AMPLITUDE constant. Noise simulates external influences on populations that may be caused by environmental changes, random events, or other factors, such as miscalculations in calculations.
 
 ## Result
 The graph below shows the difference in population size between species:
-/bio_ode_solver/examples/detected_values/dv.png:
+/bio_ode_solver/examples/detected_values/dv1.png:
 <p align="center" width="50%">
-  <img src="https://github.com/K1RUN/inverse_bio_ode_solver/blob/main/examples/detected_values/dv.png" />
+  <img src="https://github.com/K1RUN/inverse_bio_ode_solver/blob/1%2C3-amendments/examples/detected_values/dv1.png" />
 </p>
 
 ## Configuring and running
@@ -120,7 +120,7 @@ Working directory = inverse_bio_ode_solver.
 
 The butcher_tables directory contains files with coefficients a<sub>ij</sub>, b<sub>i</sub>, c<sub>i</sub>. The [a<sub>ij</sub>] matrix is called the Runge–Kutta matrix, while b<sub>i</sub> and c<sub>i</sub> are known as weights and nodes. These data are usually arranged in a mnemonic device, known as a Butcher tableau.
 
-To run model, run from python script in src/model and specify dp table name in stdin 
-(they are stored inside butcher_table directory). The data of the selected table will be parsed using src/utils/parse_tableau.py
+__To run the model, run from python script in <u>src/detected_values/species_difference.py</u> and specify dp table name in stdin 
+(they are stored inside butcher_table directory).__ The data of the selected table will be parsed using src/utils/parse_tableau.py
 
 To import PyCharm config copy all files from PyCharmConfig dir to projects .idea
