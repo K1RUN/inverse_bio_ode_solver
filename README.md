@@ -140,6 +140,7 @@ docker run -it --user=$(id -u $USER):$(id -g $USER) \
 --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
 k1run/inverse_bio_ode_solver
 ```
+This prompt will download docker image, set up container and run it.
 As soon as image is loaded, you will instantly enter the container. 
 Now you can run the project:
 ```shell
@@ -163,3 +164,13 @@ You can select any table from butcher_tables directory:
 * rk5
 * rk2_ralston
 * etc.
+
+## Deleting the image
+To check downloaded images run
+```shell
+docker image ls
+```
+To delete an image run
+```shell
+docker image rm <IMAGE ID>
+```
