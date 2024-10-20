@@ -129,7 +129,7 @@ __To run the model, run from python script in <u>src/detected_values/species_dif
 Project demo is available via Docker image
 https://hub.docker.com/r/k1run/inverse_bio_ode_solver
 
-To run it, docker service must be running on your current machine
+To run it, docker service must be running on your current machine.
 The project uses matplotlib to draw plots, so GUI is needed:
 ```shell
 docker run -it --user=$(id -u $USER):$(id -g $USER) \
