@@ -132,13 +132,15 @@ https://hub.docker.com/r/k1run/inverse_bio_ode_solver
 To run it, docker service must be running on your current machine.
 The project uses matplotlib to draw plots, so GUI is needed:
 ```shell
-docker run -it --user=$(id -u $USER):$(id -g $USER) \
---env="DISPLAY" --volume="/etc/group:/etc/group:ro" \
---volume="/etc/passwd:/etc/passwd:ro" \
---volume="/etc/shadow:/etc/shadow:ro" \   
---volume="/etc/sudoers.d:/etc/sudoers.d:ro" \
---volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-k1run/inverse_bio_ode_solver
+docker run -it \
+    --user=$(id -u $USER):$(id -g $USER) \
+    --env="DISPLAY" \
+    --volume="/etc/group:/etc/group:ro" \
+    --volume="/etc/passwd:/etc/passwd:ro" \
+    --volume="/etc/shadow:/etc/shadow:ro" \
+    --volume="/etc/sudoers.d:/etc/sudoers.d:ro" \
+    --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+    k1run/inverse_bio_ode_solver
 ```
 This prompt will download docker image, set up container and run it.
 As soon as image is loaded, you will instantly enter the container. 
