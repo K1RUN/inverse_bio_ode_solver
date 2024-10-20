@@ -108,7 +108,7 @@ The graph below shows the difference in population size between species:
   <img src="https://github.com/K1RUN/inverse_bio_ode_solver/blob/1%2C3-amendments/examples/detected_values/dv1.png" />
 </p>
 
-## Configuring and running
+## Configuring
 Python>=3.9 is required for this project (Conda is suggested).
 
 Using conda, run
@@ -120,7 +120,46 @@ Working directory = inverse_bio_ode_solver.
 
 The butcher_tables directory contains files with coefficients a<sub>ij</sub>, b<sub>i</sub>, c<sub>i</sub>. The [a<sub>ij</sub>] matrix is called the Runge–Kutta matrix, while b<sub>i</sub> and c<sub>i</sub> are known as weights and nodes. These data are usually arranged in a mnemonic device, known as a Butcher tableau.
 
+To import PyCharm config copy all files from PyCharmConfig dir to projects .idea
+
 __To run the model, run from python script in <u>src/detected_values/species_difference.py</u> and specify dp table name in stdin 
 (they are stored inside butcher_table directory).__ The data of the selected table will be parsed using src/utils/parse_tableau.py
 
-To import PyCharm config copy all files from PyCharmConfig dir to projects .idea
+## Running
+Project demo is available via Docker image
+https://hub.docker.com/r/k1run/inverse_bio_ode_solver
+
+To run it, docker service must be running on your current machine
+The project uses matplotlib to draw plots, so GUI is needed:
+```shell
+docker run -it --user=$(id -u $USER):$(id -g $USER) \
+--env="DISPLAY" --volume="/etc/group:/etc/group:ro" \
+--volume="/etc/passwd:/etc/passwd:ro" \
+--volume="/etc/shadow:/etc/shadow:ro" \   
+--volume="/etc/sudoers.d:/etc/sudoers.d:ro" \
+--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+k1run/inverse_bio_ode_solver
+```
+As soon as image is loaded, you will instantly enter the container. 
+Now you can run the project:
+```shell
+cd inverse_bio_ode_solver/
+```
+And then:
+```shell
+python -i __main__.py 2> /dev/null
+```
+If everything works fine, the following prompt will appear:
+```text
+Enter the name of the Butcher's table: 
+```
+
+You can select any table from butcher_tables directory:
+* dp
+* dp8
+* cash-karp
+* rk2
+* rk4
+* rk5
+* rk2_ralston
+* etc.

@@ -1,17 +1,17 @@
 import numpy as np
-from typing import Callable, Tuple
 
+from typing import Callable, Tuple, Any
 from inverse_bio_ode_solver.src.method.rk import get_k_coefficients
 
 
-def rk_one_step_adaptive(t: float, y: np.ndarray, y_star: np.ndarray, h: float, f: Callable[[..., ...], np.ndarray],
+def rk_one_step_adaptive(t: float, y: np.ndarray, y_star: np.ndarray, h: float, f: Callable[[Any, Any], np.ndarray],
                          tableau: dict, Atoli: float, Rtoli: float) -> Tuple[float, np.ndarray, np.ndarray, float]:
     """
     Perform one step of the adaptive Runge-Kutta method, adjusting the step size based on error estimates.
 
     This function calculates two solutions: one using the primary coefficients (b_) and one using the error-estimate
-    coefficients (b_star). The difference between these two solutions provides an estimate of the local truncation error,
-    which is then used to adjust the step size for the next step.
+    coefficients (b_star). The difference between these two solutions provides an estimate of the local truncation
+    error, which is then used to adjust the step size for the next step.
 
     :param t: Current time value
     :param y: Current solution vector (state at time t)
@@ -50,8 +50,8 @@ def rk_one_step_adaptive(t: float, y: np.ndarray, y_star: np.ndarray, h: float, 
     return t_n, y_n, y_n_star, h_new
 
 
-def rk_adaptive(t0: float, t_end: float, y0: np.ndarray[float], h_init: float,
-                f: Callable[[..., ...], np.ndarray], tableau: dict,
+def rk_adaptive(t0: float, t_end: float, y0: np.ndarray, h_init: float,
+                f: Callable[[Any, Any], np.ndarray], tableau: dict,
                 Atoli: float, Rtoli: float) -> Tuple[np.ndarray, np.ndarray]:
     """
     Adaptive Runge-Kutta method:
@@ -85,4 +85,3 @@ def rk_adaptive(t0: float, t_end: float, y0: np.ndarray[float], h_init: float,
                                                                                    Atoli, Rtoli)
 
     return t, y
-

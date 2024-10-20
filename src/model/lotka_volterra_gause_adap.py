@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 from inverse_bio_ode_solver.src.method.rk_adaptive import rk_adaptive
 from inverse_bio_ode_solver.src.utils.parse_tableau import input_butcher_tableau
-from inverse_bio_ode_solver.src.model.lotka_volterra_gause import lotka_volterra_gause
+from inverse_bio_ode_solver.src.model.lotka_volterra_gause import LotkaVolterraGause
 
 if __name__ == "__main__":
     table = input_butcher_tableau()
@@ -11,7 +11,9 @@ if __name__ == "__main__":
     # SOLUTION
     y0 = np.array([20, 5], dtype=float)
 
-    t, y = rk_adaptive(0, 70, y0, 0.01, lotka_volterra_gause, table, Atoli=1e-7, Rtoli=1e-6)
+    t, y = rk_adaptive(
+        0, 70, y0, 0.01, LotkaVolterraGause.model, table, Atoli=1e-7, Rtoli=1e-6
+    )
 
     fig, axs = plt.subplots(1, 2, figsize=(9, 5))
 

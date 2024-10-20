@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 from inverse_bio_ode_solver.src.method.rk import rk
 from inverse_bio_ode_solver.src.method.rk_adaptive import rk_adaptive
 from inverse_bio_ode_solver.src.utils.parse_tableau import parse_butcher_tableau
-from inverse_bio_ode_solver.src.model.lotka_volterra_gause import lotka_volterra_gause
+from inverse_bio_ode_solver.src.model.lotka_volterra_gause import LotkaVolterraGause
+
 
 def mse():
     """
@@ -36,10 +37,10 @@ def mse():
     adap_std = parse_butcher_tableau(prefix + 'dp')
 
     for step in steps:
-        t_dp, y_dp = rk_adaptive(0, 70, y0, step, lotka_volterra_gause, adap_std, Atoli=1e-6, Rtoli=1e-6)
+        t_dp, y_dp = rk_adaptive(0, 70, y0, step, LotkaVolterraGause.model, adap_std, Atoli=1e-6, Rtoli=1e-6)
         for method in methods:
             table = parse_butcher_tableau(prefix + method)
-            t_method, y_method = rk(0, 70, y0, step, lotka_volterra_gause, table)
+            t_method, y_method = rk(0, 70, y0, step, LotkaVolterraGause.model, table)
             mse = mean_squared_error(y_dp.T, y_method.T)
             mse_values[method].append(mse)
 

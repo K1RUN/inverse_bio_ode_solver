@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 from inverse_bio_ode_solver.src.method.rk import rk
 from inverse_bio_ode_solver.src.utils.parse_tableau import parse_butcher_tableau
-from inverse_bio_ode_solver.src.model.lotka_volterra_gause import lotka_volterra_gause
+from inverse_bio_ode_solver.src.model.lotka_volterra_gause import LotkaVolterraGause
 
 
 def step_reduction():
@@ -17,7 +17,7 @@ def step_reduction():
     for step in steps:
         for method in methods:
             table = parse_butcher_tableau(prefix + method)
-            t_method, y_method = rk(0, 70, y0, step, lotka_volterra_gause, table)
+            t_method, y_method = rk(0, 70, y0, step, LotkaVolterraGause.model, table)
             points[method][step] = {'t': t_method, 'y': y_method}
 
     fig, axs = plt.subplots(2, 3)
