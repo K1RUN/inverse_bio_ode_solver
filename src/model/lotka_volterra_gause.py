@@ -1,29 +1,33 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from typing import Tuple
 
 from inverse_bio_ode_solver.src.method.rk import rk
 from inverse_bio_ode_solver.src.utils.parse_tableau import input_butcher_tableau
 
 
 class LotkaVolterraGause:
-    b1 = 1.2
-    b2 = 1.4
-    K1 = 60
-    K2 = 40
-    alpha = 1
-    beta = 0.5
+    __slots__ = ('b1', 'b2', 'K1', 'K2', 'alpha', 'beta')
+    def __init__(
+            self, b1: float = 1.2, b2: float = 1.4, K1: int = 60,
+            K2: int = 40, alpha: float = 1, beta: float = 0.5
+    ):
+        self.b1 = b1
+        self.b2 = b2
+        self.K1 = K1
+        self.K2 = K2
+        self.alpha = alpha
+        self.beta = beta
 
-    @classmethod
-    def set_params(cls, b1: float, b2: float, K1: float, K2: float, alpha: float, beta: float):
-        cls.b1 = b1
-        cls.b2 = b2
-        cls.K1 = K1
-        cls.K2 = K2
-        cls.alpha = alpha
-        cls.beta = beta
+    @property
+    def params(self):
+        return self.b1, self.b2, self.K1, self.K2, self.alpha, self.beta
 
-    @classmethod
-    def model(cls, _, N: np.array):
+    @params.setter
+    def params(self, parameters: Tuple[float, float, int, int, float, float]):
+        self.b1, self.b2, self.K1, self.K2, self.alpha, self.beta = parameters
+
+    def model(self, _, N: np.array):
         """
         Model is described in: README.md
         Equilibrium is reached when alpha < K1/K2 and beta < K2/K1, e.g. alpha = 1, beta = 0.5, K1 = 60, K2 = 40.
@@ -34,8 +38,8 @@ class LotkaVolterraGause:
         :return: model values
         """
 
-        Ndot = np.array([cls.b1 * N[0] * (1 - (N[0] + cls.alpha * N[1]) / cls.K1),
-                         cls.b2 * N[1] * (1 - (N[1] + cls.beta * N[0]) / cls.K2)])
+        Ndot = np.array([self.b1 * N[0] * (1 - (N[0] + self.alpha * N[1]) / self.K1),
+                         self.b2 * N[1] * (1 - (N[1] + self.beta * N[0]) / self.K2)])
 
         return Ndot
 
@@ -45,7 +49,8 @@ if __name__ == "__main__":
 
     # SOLUTION
     y0 = np.array([20, 5], dtype=float)
-    t, y = rk(0, 70, y0, 0.01, LotkaVolterraGause.model, table)
+    lvg = LotkaVolterraGause()
+    t, y = rk(0, 70, y0, 0.01, lvg.model, table)
 
     fig, axs = plt.subplots(1, 2, figsize=(9, 5))
 

@@ -15,9 +15,8 @@ if __name__ == "__main__":
 
     # SOLUTION
     y0 = np.array([20, 5], dtype=float)
-    LVG: LotkaVolterraGause = LotkaVolterraGause()
-    LVG.set_params(b1=1.2, b2=1.4, K1=63, K2=41, alpha=1, beta=0.5)
-    t, y = rk(0, 70, y0, 0.01, LVG.model, table)
+    lvg: LotkaVolterraGause = LotkaVolterraGause()
+    t, y = rk(0, 70, y0, 0.01, lvg.model, table)
 
     diff = detect_values(y)
     fig, axs = plt.subplots(1, 2, figsize=(12, 5))

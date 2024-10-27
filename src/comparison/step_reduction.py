@@ -14,10 +14,11 @@ def step_reduction():
     steps = [0.001 * 2 ** (n - 1) for n in range(1, 12)]
     y0 = np.array([20, 5], dtype=float)
 
+    lvg = LotkaVolterraGause()
     for step in steps:
         for method in methods:
             table = parse_butcher_tableau(prefix + method)
-            t_method, y_method = rk(0, 70, y0, step, LotkaVolterraGause.model, table)
+            t_method, y_method = rk(0, 70, y0, step, lvg.model, table)
             points[method][step] = {'t': t_method, 'y': y_method}
 
     fig, axs = plt.subplots(2, 3)

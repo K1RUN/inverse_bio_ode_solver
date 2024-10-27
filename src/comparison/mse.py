@@ -36,11 +36,12 @@ def mse():
     y0 = np.array([20, 5], dtype=float)
     adap_std = parse_butcher_tableau(prefix + 'dp')
 
+    lvg = LotkaVolterraGause()
     for step in steps:
-        t_dp, y_dp = rk_adaptive(0, 70, y0, step, LotkaVolterraGause.model, adap_std, Atoli=1e-6, Rtoli=1e-6)
+        t_dp, y_dp = rk_adaptive(0, 70, y0, step, lvg.model, adap_std, Atoli=1e-6, Rtoli=1e-6)
         for method in methods:
             table = parse_butcher_tableau(prefix + method)
-            t_method, y_method = rk(0, 70, y0, step, LotkaVolterraGause.model, table)
+            t_method, y_method = rk(0, 70, y0, step, lvg.model, table)
             mse = mean_squared_error(y_dp.T, y_method.T)
             mse_values[method].append(mse)
 

@@ -14,7 +14,7 @@ def specie_difference(species_diff: np.ndarray) -> np.ndarray:
     :param species_diff: 2d array, each row corresponds to a specie population
     :return: difference between species population
     """
-    return np.square(species_diff[0] - species_diff[1])
+    return np.abs(species_diff[0] - species_diff[1])
 
 
 def detect_values(species_population: np.ndarray) -> np.ndarray:
@@ -26,7 +26,7 @@ def detect_values(species_population: np.ndarray) -> np.ndarray:
     """
     population_diff = specie_difference(species_population)
     rnd = np.random.normal(0, NOISE_AMPLITUDE, species_population.shape[1])
-    return population_diff + rnd
+    return population_diff
 
 
 if __name__ == "__main__":
@@ -34,7 +34,8 @@ if __name__ == "__main__":
 
     # SOLUTION
     y0 = np.array([20, 5], dtype=float)
-    t, y = rk(0, 70, y0, 0.01, LotkaVolterraGause.model, table)
+    lvg = LotkaVolterraGause()
+    t, y = rk(0, 70, y0, 0.01, lvg.model, table)
 
     diff = detect_values(y)
     fig, axs = plt.subplots(1, 2, figsize=(12, 5))
