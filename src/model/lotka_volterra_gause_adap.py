@@ -11,8 +11,9 @@ if __name__ == "__main__":
     # SOLUTION
     y0 = np.array([20, 5], dtype=float)
 
+    lvg = LotkaVolterraGause()
     t, y = rk_adaptive(
-        0, 70, y0, 0.01, LotkaVolterraGause.model, table, Atoli=1e-7, Rtoli=1e-6
+        0, 70, y0, 0.01, lvg.model, table, Atoli=1e-7, Rtoli=1e-6
     )
 
     fig, axs = plt.subplots(1, 2, figsize=(9, 5))
