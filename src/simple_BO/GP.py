@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from matplotlib import cm
-from typing import Optional
 from numpy import typing as npt
+from typing import Optional, Union, Tuple
 from matplotlib.ticker import LinearLocator
 
 
@@ -22,7 +22,7 @@ class GaussianProcess:
 
 
     @staticmethod
-    @jax.jit
+    # @jax.jit
     def get_sq_dist(vectors1: npt.ArrayLike, vectors2: npt.ArrayLike) -> npt.ArrayLike:
         """Calculate distance between each pair of given vectors"""
         sq_dist: np.ndarray = (vectors1[:, np.newaxis] - vectors2) ** 2
@@ -74,6 +74,30 @@ class GaussianProcess:
         self.cov = self.K_ss - K_s.T.dot(K_inv).dot(K_s)
 
         return self.mu, self.cov
+
+
+    def predict(
+        self,
+        x_sample: npt.ArrayLike,
+        return_std: bool = False,
+    ) -> Union[npt.ArrayLike, Tuple]:
+        """Use line interpolation to connect points not in a linespace"""
+        y: np.ndarray = np.ndarray([])
+        indicies: np.ndarray = np.array([], dtype=np.int64)
+
+        for x in x_sample:
+            idx = np.abs(self.X_test - x).argmin()
+            indicies = np.append(indicies, idx)
+
+            y = np.append(y, self.samples.reshape(1, -1)[-1][idx])
+
+        if return_std:
+            sigmas: np.ndarray = np.array([])
+            for idx in indicies:
+                sigmas = np.append(sigmas, np.diag(self.cov)[idx])
+            return y, sigmas
+
+        return y
 
 
     def plot_gp(
@@ -142,6 +166,7 @@ if __name__ == '__main__':
     gp.calculate_covariance(x_test)
     gp.fit(x_train, y_train, sigma_y=noise)
     gp.sample_multivariate(sample_count=1)
+    print(gp.predict(np.array([[0]]), return_std=True))
     gp.plot_gp()
     plt.show()
 
@@ -182,6 +207,6 @@ if __name__ == '__main__':
         y_train,
         sigma_y=noise
     )
-    s = gp3d.sample_multivariate(sample_count=5)
+    s = gp3d.sample_multivariate(sample_count=1)
     gp3d.plot_gp_2d(xd, yd)
     plt.show()
