@@ -22,7 +22,7 @@ class GaussianProcess:
 
 
     @staticmethod
-    # @jax.jit
+    @jax.jit
     def get_sq_dist(vectors1: npt.ArrayLike, vectors2: npt.ArrayLike) -> npt.ArrayLike:
         """Calculate distance between each pair of given vectors"""
         sq_dist: np.ndarray = (vectors1[:, np.newaxis] - vectors2) ** 2
@@ -62,8 +62,8 @@ class GaussianProcess:
         sigma_f: float = 1.0,
         sigma_y: float = 1e-8,
     ):
-        self.X_train = X_train if self.X_train is None else np.vstack((self.X_train, X_train))
-        self.Y_train = Y_train if self.Y_train is None else np.vstack((self.Y_train, Y_train))
+        self.X_train = X_train
+        self.Y_train = Y_train
         K: np.ndarray = (
             GaussianProcess.RBF_kernel(self.X_train, self.X_train, l, sigma_f) +
             sigma_y ** 2 * np.eye(len(self.X_train))
@@ -82,22 +82,22 @@ class GaussianProcess:
         return_std: bool = False,
     ) -> Union[npt.ArrayLike, Tuple]:
         """Use line interpolation to connect points not in a linespace"""
-        y: np.ndarray = np.ndarray([])
+        y = []
         indicies: np.ndarray = np.array([], dtype=np.int64)
 
         for x in x_sample:
             idx = np.abs(self.X_test - x).argmin()
             indicies = np.append(indicies, idx)
 
-            y = np.append(y, self.samples.reshape(1, -1)[-1][idx])
+            y = np.append(y, self.samples.T[-1][idx])
 
         if return_std:
             sigmas: np.ndarray = np.array([])
             for idx in indicies:
                 sigmas = np.append(sigmas, np.diag(self.cov)[idx])
-            return y, sigmas
+            return np.asarray(np.array(y)), sigmas
 
-        return y
+        return np.asarray(np.array(y))
 
 
     def plot_gp(
@@ -170,18 +170,22 @@ if __name__ == '__main__':
     gp.plot_gp()
     plt.show()
 
-    x_train = np.array([-4, -2, -1.5]).reshape(-1, 1)
+    x_train = np.vstack((x_train, np.array([-4, -2, -1.5]).reshape(-1, 1)))
     y_train = np.cos(x_train) + noise * np.random.randn(*x_train.shape)
     gp.fit(x_train, y_train, sigma_y=noise)
     gp.sample_multivariate(sample_count=1)
     gp.plot_gp()
     plt.show()
 
-    x_train = np.array([0, 2.125, 3.23, 4.24]).reshape(-1, 1)
+    x_train = np.vstack((x_train, np.array([0, 2.125, 3.23, 4.24]).reshape(-1, 1)))
     y_train = np.cos(x_train) + noise * np.random.randn(*x_train.shape)
     gp.fit(x_train, y_train, sigma_y=noise)
     gp.sample_multivariate(sample_count=1)
     gp.plot_gp()
+    xs = np.linspace(-5, 5, 87).reshape(-1, 1)
+    res = gp.predict(xs)
+    plt.plot(xs, res, label='Interpolated')
+    plt.legend(loc='upper right')
     plt.show()
 
 
