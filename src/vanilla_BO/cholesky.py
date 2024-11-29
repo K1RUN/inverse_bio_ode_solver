@@ -1,4 +1,5 @@
 import jax
+import timeit
 import numpy as np
 import jax.numpy as jnp
 from matplotlib import cm
@@ -37,7 +38,7 @@ def cholesky(matrix: npt.ArrayLike) -> npt.ArrayLike:
             sum_tmp: np.float64 = sum(L_[ith_row_ind + k] * L_[jth_row_ind + k] for k in range(j))
 
             if i == j:
-                L_[ith_row_ind + j] = jnp.sqrt(matrix[i][i] - sum_tmp)
+                L_[ith_row_ind + j] = np.sqrt(matrix[i][i] - sum_tmp)
             else:
                 L_[ith_row_ind + j] = (matrix[i][j] - sum_tmp) / L_[jth_row_ind + j]
     return L_
@@ -116,10 +117,10 @@ if __name__ == '__main__':
     s = sample_multivariate(mu_s, cov_s, (len(x1), 10))
     plot_gp_2d(mu_s, cov_s, xd, yd, samples_=s)
     plt.show()
-    # print(timeit.timeit("get_sq_dist(x1_test, x1_test)", globals=globals(), number=100))
+    # print(timeit.timeit("get_sq_dist(x1, x1)", globals=globals(), number=100))
     # print("Sample ", timeit.timeit("sample_multivariate(mu_s, cov_s, (n, 10))", globals=globals(), number=100))
-    # print(
-    #     "Numpy cholesky ",
-    #     timeit.timeit("np.linalg.cholesky(cov_s + 1e-5*np.eye(n))", globals=globals(), number=100)
-    # )
-    # print("My cholesky ", timeit.timeit("cholesky(cov_s + 1e-5*np.eye(n))", globals=globals(), number=100))
+    print(
+        "Numpy cholesky ",
+        timeit.timeit("np.linalg.cholesky(cov_s + 1e-5*np.eye(len(cov_s)))", globals=globals(), number=1)
+    )
+    print("My cholesky ", timeit.timeit("cholesky(cov_s + 1e-5*np.eye(len(cov_s)))", globals=globals(), number=1))

@@ -81,12 +81,12 @@ class GaussianProcess:
         x_sample: npt.ArrayLike,
         return_std: bool = False,
     ) -> Union[npt.ArrayLike, Tuple]:
-        """Use line interpolation to connect points not in a linespace"""
+        """Use linear interpolation to connect points not in a linespace"""
         y = []
         indicies: np.ndarray = np.array([], dtype=np.int64)
 
         for x in x_sample:
-            idx = np.abs(self.X_test - x).argmin()
+            idx = np.linalg.norm(self.X_test - x, axis=1).argmin()
             indicies = np.append(indicies, idx)
 
             y = np.append(y, self.samples.T[-1][idx])
@@ -136,13 +136,13 @@ class GaussianProcess:
             label="mean",
             alpha = 0.6
         )
-        for sample in self.samples.T:
+        for i, sample in enumerate(self.samples.T):
             ax_.plot_surface(
                 X1, X2,
                 sample.reshape(X1.shape),
                 linewidth = 0,
                 antialiased = False,
-                label = "sample",
+                label = f"sample {i}",
                 alpha = 0.5
             )
 
@@ -159,7 +159,6 @@ if __name__ == '__main__':
     noise = 0.0
     points = 100
     x_test = np.linspace(-5, 5, points).reshape(-1, 1)
-    # X_train = np.linspace(-5, 5, points // 10).reshape(-1, 1)
     x_train = np.linspace(-5, 5, points // 10).reshape(-1, 1)
     y_train = np.cos(x_train) + noise * np.random.randn(*x_train.shape)
     gp = GaussianProcess(x_test.shape[0])
@@ -211,6 +210,8 @@ if __name__ == '__main__':
         y_train,
         sigma_y=noise
     )
-    s = gp3d.sample_multivariate(sample_count=1)
+    s = gp3d.sample_multivariate(sample_count=5)
     gp3d.plot_gp_2d(xd, yd)
+    res = gp3d.predict(np.array([[1, 0], [0, 1]]))
+    print(res)
     plt.show()
